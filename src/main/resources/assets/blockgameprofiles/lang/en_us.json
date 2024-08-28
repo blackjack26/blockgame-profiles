@@ -1,0 +1,18 @@
+{
+  "text.autoconfig.blockgameenhanced.title": "Blockgame Profiles Options",
+  "text.autoconfig.blockgameprofiles.option.generalConfig": "General",
+  "text.autoconfig.blockgameprofiles.option.generalConfig.enabled": "Enable Profiles",
+  "text.autoconfig.blockgameprofiles.option.generalConfig.enabled.@Tooltip": "Enable or disable the profile system.",
+  "text.autoconfig.blockgameprofiles.option.storageConfig": "Storage",
+  "text.autoconfig.blockgameprofiles.option.storageConfig.backendType": "Storage Type",
+  "text.autoconfig.blockgameprofiles.option.storageConfig.backendType.@Tooltip": "The type of storage to use for the recipe journal.",
+
+  "menu.blockgame.stats.cancel_preview": "Click to cancel profile changes",
+  "menu.blockgame.stats.save_profile": "Click to save and apply your profile",
+  "menu.blockgame.stats.create_profile": "Click to create a new profile",
+  "menu.blockgame.stats.delete_profile": "Click to delete this profile",
+  "menu.blockgame.stats.reallocate": "Click to reallocate your attributes",
+  "menu.blockgame.stats.profile_placeholder": "Profile Name",
+  "menu.blockgame.stats.available": "Available: ",
+  "menu.blockgame.stats.current": "Current Profile"
+}

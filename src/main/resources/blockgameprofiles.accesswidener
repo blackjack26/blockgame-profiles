@@ -1,0 +1,8 @@
+accessWidener v1 named
+
+# net.minecraft.client.gui.tooltip.Tooltip
+accessible field net/minecraft/client/gui/tooltip/Tooltip lines Ljava/util/List;
+
+# net.minecraft.client.gui.widget.TexturedButtonWidget
+accessible field net/minecraft/client/gui/widget/TexturedButtonWidget textures Lnet/minecraft/client/gui/screen/ButtonTextures;
+mutable field net/minecraft/client/gui/widget/TexturedButtonWidget textures Lnet/minecraft/client/gui/screen/ButtonTextures;

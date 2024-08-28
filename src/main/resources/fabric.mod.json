@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "blockgameprofiles",
+  "version": "${version}",
+  "name": "Blockgame Profiles",
+  "description": "(Unofficial) Adds profile management to Blockgame",
+  "authors": ["bnjc"],
+  "contact": {
+    "repo": "https://github.com/blackjack26/blockgame-profiles",
+    "sources": "https://github.com/blackjack26/blockgame-profiles",
+    "issues": "https://github.com/blackjack26/blockgame-profiles/issues",
+    "homepage": "https://modrinth.com/mod/blockgame-profiles"
+  },
+  "license": "MIT",
+  "icon": "assets/blockgameprofiles/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.bnjc.blockgameprofiles.client.BlockgameProfilesClient"
+    ],
+    "main": [
+      "dev.bnjc.blockgameprofiles.BlockgameProfiles"
+    ],
+    "modmenu": [
+      "dev.bnjc.blockgameprofiles.config.ModMenuImpl"
+    ]
+  },
+  "mixins": [
+    "blockgameprofiles.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "cloth-config": "*"
+  },
+  "accessWidener": "blockgameprofiles.accesswidener",
+  "custom": {
+    "modmenu": {
+      "update_checker": false,
+      "links": {
+        "modmenu.discord": "https://discord.gg/piratesoftware"
+      }
+    }
+  }
+}

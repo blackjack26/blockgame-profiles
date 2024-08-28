@@ -1,0 +1,80 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      previousVersion:
+        description: 'Previous Version (Do not include v prefix, must be same as the last version tag! Example: 1.4.1)'
+        required: false
+      version:
+        description: 'Version (Do not include v prefix! Example: 1.4.2)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Create version tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/v${{ github.event.inputs.version }}",
+              sha: context.sha
+            })
+
+      - name: Fetch tags
+        run: git fetch --tags
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Make Grade wrapper executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build --stacktrace -PlastTag=v${{ github.event.inputs.previousVersion }} -PcurrentTag=v${{ github.event.inputs.version }}
+
+      - name: Archive Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: BlockgameProfiles-${{ github.event.inputs.version }}
+          path: build/libs/
+
+      - name: Release Version to GitHub
+        uses: softprops/action-gh-release@v1
+        if: ${{ github.triggering_actor == 'blackjack26' }}
+        with:
+          body_path: ${{ github.workspace }}/build/CHANGELOG.md
+          tag_name: v${{ github.event.inputs.version }}
+          name: Blockgame Profiles v${{ github.event.inputs.version }}
+          target_commitish: ${{ github.sha }}
+          files: build/libs/*.jar
+          prerelease: ${{ endsWith(github.event.inputs.version, '-alpha') || endsWith(github.event.inputs.version, '-beta') }}
+
+      - name: Release Version to 3rd Parties
+        uses: gradle/gradle-build-action@v2
+        if: ${{ github.triggering_actor == 'blackjack26' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_API_KEY }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        with:
+          arguments: publish publishUnified --stacktrace -PlastTag=v${{ github.event.inputs.previousVersion }} -PcurrentTag=v${{ github.event.inputs.version }}
