@@ -58,6 +58,7 @@ public class StatProfileGameFeature extends GameFeature {
     }
 
     this.screenManager.receiveInventory(packet);
-    return ActionResult.CONSUME;
+//    return ActionResult.CONSUME;
+    return ActionResult.PASS;
   }
 }

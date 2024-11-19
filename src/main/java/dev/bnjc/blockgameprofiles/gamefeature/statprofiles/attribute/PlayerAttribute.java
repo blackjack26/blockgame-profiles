@@ -45,6 +45,11 @@ public class PlayerAttribute {
     this.slots = slots;
     this.itemStack = itemStack;
     this.category = determineCategory(name);
+
+    // Adjust ItemStack max damage
+//    itemStack.getItem().maxDamage = max;
+//    itemStack.setDamage(max - spent);
+//    itemStack.setCount(spent);
   }
 
   public PlayerAttribute reset() {

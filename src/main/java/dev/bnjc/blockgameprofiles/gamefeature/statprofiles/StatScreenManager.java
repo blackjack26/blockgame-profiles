@@ -3,6 +3,7 @@ package dev.bnjc.blockgameprofiles.gamefeature.statprofiles;
 import dev.bnjc.blockgameprofiles.BlockgameProfiles;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.allocate.StatAllocator;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.attribute.PlayerAttribute;
+import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.gui.screen.ProfileScreen;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.gui.screen.StatScreen;
 import dev.bnjc.blockgameprofiles.helper.NbtHelper;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import net.minecraft.network.packet.s2c.play.InventoryS2CPacket;
 import net.minecraft.network.packet.s2c.play.OpenScreenS2CPacket;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -27,7 +29,7 @@ public final class StatScreenManager {
   private final StatAllocator statAllocator;
 
   @Nullable
-  private StatScreen screen;
+  private ProfileScreen screen;
 
   /**
    * The sync ID of the current screen. This changes every time we make a selection to allocate a stat. So
@@ -75,12 +77,13 @@ public final class StatScreenManager {
     if (this.screen != null) {
       this.shouldParsePoints = true;
     }
-    this.screen = new StatScreen(packet.getName(), this);
 
     // Set the player's current screen handler to a 9x5 screen
     ClientPlayerEntity player = this.gameFeature.getMinecraftClient().player;
     if (player != null) {
-      player.currentScreenHandler = ScreenHandlerType.GENERIC_9X5.create(packet.getSyncId(), player.getInventory());
+      var screenHandler = ScreenHandlerType.GENERIC_9X5.create(packet.getSyncId(), player.getInventory());
+      this.screen = new ProfileScreen(screenHandler, player.getInventory(), packet.getName(), this);
+      player.currentScreenHandler = screenHandler;
       this.gameFeature.getMinecraftClient().setScreen(this.screen);
     }
 
@@ -140,6 +143,7 @@ public final class StatScreenManager {
     this.screen = null;
 
     // TODO: Do we want to reset sync id and inventory?
+    BlockgameProfiles.LOGGER.info("[Blockgame Profiles] Screen closed");
   }
 
   public void invalidateScreen() {
