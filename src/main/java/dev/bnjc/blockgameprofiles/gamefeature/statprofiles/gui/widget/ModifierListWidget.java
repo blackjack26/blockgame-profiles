@@ -1,7 +1,9 @@
 package dev.bnjc.blockgameprofiles.gamefeature.statprofiles.gui.widget;
 
+import com.google.common.collect.Lists;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.attribute.PlayerAttribute;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.gui.screen.StatScreen;
+import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.modifier.ModifierCategory;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.modifier.ModifierDisplay;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.modifier.ModifierType;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.modifier.StatModifier;
@@ -18,9 +20,7 @@ public class ModifierListWidget extends ScrollableViewWidget {
   private final StatScreen parent;
   private int bottomY = 0;
 
-  private final List<ModifierDisplay> offenseModifiers = new ArrayList<>();
-  private final List<ModifierDisplay> defenseModifiers = new ArrayList<>();
-  private final List<ModifierDisplay> unknownModifiers = new ArrayList<>();
+  private final Map<ModifierCategory, List<ModifierDisplay>> categoryModifiers = new HashMap<>();
 
   public ModifierListWidget(StatScreen parent, int x, int y, int width, int height) {
     super(x, y, width, height, Text.empty());
@@ -29,9 +29,7 @@ public class ModifierListWidget extends ScrollableViewWidget {
   }
 
   public void build() {
-    this.offenseModifiers.clear();
-    this.defenseModifiers.clear();
-    this.unknownModifiers.clear();
+    this.categoryModifiers.clear();
 
     Map<String, ModifierDisplay> modifiers = new HashMap<>();
 
@@ -51,23 +49,26 @@ public class ModifierListWidget extends ScrollableViewWidget {
     for (ModifierDisplay modifier : modifiers.values()) {
       if (modifier.getValue() == 0) continue; // TODO: Maybe add config to show 0 value modifiers?
 
-      switch (modifier.getCategory()) {
-        case OFFENSE -> this.offenseModifiers.add(modifier);
-        case DEFENSE -> this.defenseModifiers.add(modifier);
-        default -> this.unknownModifiers.add(modifier);
-      }
+      this.categoryModifiers.compute(modifier.getCategory(), (modifierCategory, modifierDisplays) -> {
+        if (modifierDisplays == null) {
+          modifierDisplays = new ArrayList<>();
+        }
+        modifierDisplays.add(modifier);
+        return modifierDisplays;
+      });
     }
 
-    this.offenseModifiers.sort(Comparator.comparingInt(ModifierDisplay::getOrder));
-    this.defenseModifiers.sort(Comparator.comparingInt(ModifierDisplay::getOrder));
-    this.unknownModifiers.sort(Comparator.comparingInt(ModifierDisplay::getOrder));
+    this.categoryModifiers.values()
+        .forEach((modifierList) -> {
+          modifierList.sort(Comparator.comparingInt(ModifierDisplay::getOrder));
+        });
 
     this.visible = true;
   }
 
   @Override
   protected void renderContents(DrawContext context, int mouseX, int mouseY, float delta) {
-    if (offenseModifiers.isEmpty() && defenseModifiers.isEmpty() && unknownModifiers.isEmpty()) {
+    if (categoryModifiers.isEmpty()) {
       return;
     }
 
@@ -78,61 +79,33 @@ public class ModifierListWidget extends ScrollableViewWidget {
     int x = this.getX() + 8;
     int maxW = 0;
     TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+    boolean previousDisplay = false;
 
-    // Offense Stats
-    if (!offenseModifiers.isEmpty()) {
-      MutableText titleText = Text.literal("Offense").formatted(Formatting.BOLD);
-      maxW = Math.max(maxW, textRenderer.getWidth(titleText));
-
-      context.drawTextWithShadow(textRenderer, titleText, x, y, 0xFFFFFF);
-      y += 12;
-      for (ModifierDisplay modifier : offenseModifiers) {
-        MutableText modifierText = getModifierText(modifier);
-        maxW = Math.max(maxW, textRenderer.getWidth(modifierText));
-
-        context.drawText(textRenderer, modifierText, x, y, 0xFFFFFF, false);
-        y += 12;
+    for (ModifierCategory category : ModifierCategory.values()) {
+      List<ModifierDisplay> displays = categoryModifiers.getOrDefault(category, new ArrayList<>());
+      if (displays.isEmpty()) {
+        continue;
       }
 
-      if (!defenseModifiers.isEmpty() || !unknownModifiers.isEmpty()) {
+      // Add some spacing if we've already drawn another display
+      if (previousDisplay) {
         y += 8;
       }
-    }
 
-    // Defense Stats
-    if (!defenseModifiers.isEmpty()) {
-      MutableText titleText = Text.literal("Defense").formatted(Formatting.BOLD);
+      MutableText titleText = Text.literal(category.title).formatted(Formatting.BOLD);
       maxW = Math.max(maxW, textRenderer.getWidth(titleText));
+
       context.drawTextWithShadow(textRenderer, titleText, x, y, 0xFFFFFF);
       y += 12;
-
-      for (ModifierDisplay modifier : defenseModifiers) {
-        MutableText modifierText = getModifierText(modifier);
+      for (ModifierDisplay display : displays) {
+        MutableText modifierText = getModifierText(display);
         maxW = Math.max(maxW, textRenderer.getWidth(modifierText));
 
         context.drawText(textRenderer, modifierText, x, y, 0xFFFFFF, false);
         y += 12;
       }
 
-      if (!unknownModifiers.isEmpty()) {
-        y += 8;
-      }
-    }
-
-    // Other Stats
-    if (!unknownModifiers.isEmpty()) {
-      MutableText titleText = Text.literal("Other").formatted(Formatting.BOLD);
-      maxW = Math.max(maxW, textRenderer.getWidth(titleText));
-      context.drawTextWithShadow(textRenderer, titleText, x, y, 0xFFFFFF);
-      y += 12;
-
-      for (ModifierDisplay modifier : unknownModifiers) {
-        MutableText modifierText = getModifierText(modifier);
-        maxW = Math.max(maxW, textRenderer.getWidth(modifierText));
-
-        context.drawText(textRenderer, modifierText, x, y, 0xFFFFFF, false);
-        y += 12;
-      }
+      previousDisplay = true;
     }
 
     this.bottomY = y;

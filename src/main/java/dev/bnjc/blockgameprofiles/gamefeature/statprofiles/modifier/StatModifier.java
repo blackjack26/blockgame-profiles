@@ -75,10 +75,12 @@ public class StatModifier {
     return switch (name) {
       case "Critical Strike Chance", "Critical Strike Power", "All Damage", "Weapon Damage", "Magic Damage",
            "Projectile Damage", "Thaumaturgy Power", "Backstab Damage", "PVE Damage", "PVP Damage",
-           "AOE Size Amplifier", "Cooldown Reduction", "Movement Speed" -> ModifierCategory.OFFENSE;
+           "AOE Size Amplifier", "Cooldown Reduction", "Movement Speed", "Threat" -> ModifierCategory.OFFENSE;
       case "Max Health", "Health Regeneration", "Healing Received", "Defense", "Block Rating", "Block Power",
            "Block Cooldown Reduction", "Knockback Resistance", "Damage Reduction", "PVE Damage Reduction",
            "PVP Damage Reduction" -> ModifierCategory.DEFENSE;
+      case "Mining Skill", "Logging Skill", "Archaeology Skill", "Fishing Skill", "Herbalism Skill",
+           "Hunting Skill" -> ModifierCategory.PROFESSION;
       default -> ModifierCategory.UNKNOWN;
     };
   }

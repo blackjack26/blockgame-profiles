@@ -59,6 +59,13 @@ public class ModifierDisplay {
       case "Max Health", "Health Regeneration", "Healing Received" -> "❤";
       case "Defense", "Block Cooldown Reduction", "Block Power", "Block Rating", "Knockback Resistance",
            "Damage Reduction", "PVE Damage Reduction", "PVP Damage Reduction" -> "⛨";
+      case "Threat" -> "⚠";
+      case "Mining Skill" -> "⛏";
+      case "Logging Skill" -> "🪓";
+      case "Archaeology Skill" -> "☠";
+      case "Fishing Skill" -> "🎣";
+      case "Herbalism Skill" -> "☘";
+      case "Hunting Skill" -> "🐺";
       default -> "?";
     };
   }
@@ -78,17 +85,24 @@ public class ModifierDisplay {
       case "AOE Size Amplifier" -> 10;
       case "Cooldown Reduction" -> 11;
       case "Movement Speed" -> 12;
-      case "Max Health" -> 13;
-      case "Health Regeneration" -> 14;
-      case "Healing Received" -> 15;
-      case "Defense" -> 16;
-      case "Block Rating" -> 17;
-      case "Block Power" -> 18;
-      case "Block Cooldown Reduction" -> 19;
-      case "Knockback Resistance" -> 20;
-      case "Damage Reduction" -> 21;
-      case "PVE Damage Reduction" -> 22;
-      case "PVP Damage Reduction" -> 23;
+      case "Threat" -> 13;
+      case "Max Health" -> 14;
+      case "Health Regeneration" -> 15;
+      case "Healing Received" -> 16;
+      case "Defense" -> 17;
+      case "Block Rating" -> 18;
+      case "Block Power" -> 19;
+      case "Block Cooldown Reduction" -> 20;
+      case "Knockback Resistance" -> 21;
+      case "Damage Reduction" -> 22;
+      case "PVE Damage Reduction" -> 23;
+      case "PVP Damage Reduction" -> 24;
+      case "Mining Skill" -> 25;
+      case "Logging Skill" -> 26;
+      case "Archaeology Skill" -> 27;
+      case "Fishing Skill" -> 28;
+      case "Herbalism Skill" -> 29;
+      case "Hunting Skill" -> 30;
       default -> -1;
     };
   }
