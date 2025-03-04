@@ -32,7 +32,7 @@ public class StatScreen extends Screen {
   private static final int BUTTON_SIZE = 14;
 
   private static final int MENU_WIDTH = 176;
-  private static final int MENU_HEIGHT = 154; // 5 * 18 + 48 + 16
+  private static final int MENU_HEIGHT = 6 * 18 + 48 + 16;
 
   private static final int TITLE_LEFT = 8;
   private static final int TITLE_TOP = 8;
@@ -242,7 +242,7 @@ public class StatScreen extends Screen {
 
     int availableX = this.left + (getMenuWidth() - this.textRenderer.getWidth(text)) / 2;
     // Place below the inventory grid
-    int availableY = this.top + 40 + (5 * 18) + 7;
+    int availableY = this.top + 40 + (6 * 18) + 7;
 
     context.drawText(this.textRenderer, text, availableX, availableY, 0xFFFFFF, false);
 

@@ -31,8 +31,8 @@ public class StatProfileGameFeature extends GameFeature {
       return ActionResult.PASS;
     }
 
-    // Check if the screen is a 9x5 screen
-    if (packet.getScreenHandlerType() != ScreenHandlerType.GENERIC_9X5) {
+    // Check if the screen is a 9x6 screen
+    if (packet.getScreenHandlerType() != ScreenHandlerType.GENERIC_9X6) {
       return ActionResult.PASS;
     }
 
@@ -58,7 +58,6 @@ public class StatProfileGameFeature extends GameFeature {
     }
 
     this.screenManager.receiveInventory(packet);
-//    return ActionResult.CONSUME;
-    return ActionResult.PASS;
+    return ActionResult.CONSUME;
   }
 }

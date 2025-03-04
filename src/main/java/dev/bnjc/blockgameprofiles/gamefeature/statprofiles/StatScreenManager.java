@@ -29,7 +29,7 @@ public final class StatScreenManager {
   private final StatAllocator statAllocator;
 
   @Nullable
-  private ProfileScreen screen;
+  private StatScreen screen;
 
   /**
    * The sync ID of the current screen. This changes every time we make a selection to allocate a stat. So
@@ -78,11 +78,11 @@ public final class StatScreenManager {
       this.shouldParsePoints = true;
     }
 
-    // Set the player's current screen handler to a 9x5 screen
+    // Set the player's current screen handler to a 9x6 screen
     ClientPlayerEntity player = this.gameFeature.getMinecraftClient().player;
     if (player != null) {
-      var screenHandler = ScreenHandlerType.GENERIC_9X5.create(packet.getSyncId(), player.getInventory());
-      this.screen = new ProfileScreen(screenHandler, player.getInventory(), packet.getName(), this);
+      var screenHandler = ScreenHandlerType.GENERIC_9X6.create(packet.getSyncId(), player.getInventory());
+      this.screen = new StatScreen(packet.getName(), this);
       player.currentScreenHandler = screenHandler;
       this.gameFeature.getMinecraftClient().setScreen(this.screen);
     }
@@ -97,8 +97,8 @@ public final class StatScreenManager {
     Map<String, PlayerAttribute> attributes = new HashMap<>();
 
     for (int slot = 0; slot < this.receivedInventory.size(); slot++) {
-      // Only check the first 44 slots (5 rows of 9 slots)
-      if (slot >= 45) {
+      // Only check the first 53 slots (6 rows of 9 slots)
+      if (slot >= 6 * 9) {
         break;
       }
 

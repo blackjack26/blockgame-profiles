@@ -21,7 +21,7 @@ public class StatGridWidget extends ClickableWidget {
 
   private static final Identifier BACKGROUND = GUIHelper.sprite("widgets/slot_background");
   private static final int GRID_COLUMNS = 9;
-  private static final int GRID_ROWS = 5;
+  private static final int GRID_ROWS = 6;
 
   @Getter
   private final StatScreen screen;
