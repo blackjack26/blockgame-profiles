@@ -141,6 +141,7 @@ public final class StatScreenManager {
 
   public void onScreenClose() {
     this.screen = null;
+    this.statAllocator.stop();
 
     // TODO: Do we want to reset sync id and inventory?
     BlockgameProfiles.LOGGER.info("[Blockgame Profiles] Screen closed");

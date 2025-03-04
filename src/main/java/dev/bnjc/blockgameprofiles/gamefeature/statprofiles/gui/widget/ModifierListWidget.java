@@ -1,6 +1,5 @@
 package dev.bnjc.blockgameprofiles.gamefeature.statprofiles.gui.widget;
 
-import com.google.common.collect.Lists;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.attribute.PlayerAttribute;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.gui.screen.StatScreen;
 import dev.bnjc.blockgameprofiles.gamefeature.statprofiles.modifier.ModifierCategory;

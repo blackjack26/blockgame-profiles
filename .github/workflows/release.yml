@@ -54,7 +54,7 @@ jobs:
           arguments: build --stacktrace -PlastTag=v${{ github.event.inputs.previousVersion }} -PcurrentTag=v${{ github.event.inputs.version }}
 
       - name: Archive Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: BlockgameProfiles-${{ github.event.inputs.version }}
           path: build/libs/
